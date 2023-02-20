@@ -26,9 +26,6 @@ UPDATE empleados
     WHERE (nDIEmp = '30.111.123');
 
 -- 4) MODIFICACIÓN. Disminuimos un 5% todas las comisiones
-update empleados 
-     set 
-	 where 
 
 -- 5) MODIFICACIÓN. volvemos a dejar las comisiones como estaban, subimos el 5%. Fórmula: cantidad / (1 - 0.05)
 

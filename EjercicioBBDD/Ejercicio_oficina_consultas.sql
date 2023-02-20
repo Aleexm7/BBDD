@@ -10,16 +10,22 @@ select sum(salEmp+comisionE) as Total_ganancias, cargoE from empleados group by 
 select max(comisionE) as maximo, cargoE from empleados group by cargoE;
 
 -- 4. Calcula el sueldo medio de los empleados de cada departamento
-select sum((salEmp+comisionE)/26) as Total_ganancias, codDepto from empleados group by codDepto;
+select departamentos.codDepto, nombreDpto, ciudad, round(avg(salEmp), 2) as sueldo_medio
+From departamentos, empleados
+where departamentos.codDepto=empleados.codDepto
+group by departamentos.codDepto;
 
 -- 5 Muestra a qué departamento pertenece cada empleado
-select e.nomEmp, dp.nombreDpto from empleados as e join departamentos as dp on dp.codDepto = e.codDepto;
+select e.nomEmp, dp.nombreDpto, dp.ciudad from empleados as e join departamentos as dp on dp.codDepto = e.codDepto;
 
 -- 6. Muestra cuantos empleados hay en cada departamento.
-select nombreDpto, count(e.nDIEmp) as num_emp from empleados as e join departamentos as dp on dp.codDepto = e.codDepto group by nombreDpto;
+select codDepto, nombreDpto, ciudad, count(*) as num_emp 
+from empleados 
+join departamentos using (codDepto) 
+group by codDepto;
 
 -- 7. A partir de la tabla empleados, visualizar cuántos apellidos de los empleados empiezan por la letra A.
-select count(nomEmp) as total from empleados where nomEmp like '%A%';
+select count(nomEmp) as total from empleados where nomEmp like '% A%';
 
 -- 8. Muestra el nombre de los que trabajan en gerencia.
 select e.nomEmp, dp.nombreDpto from empleados as e join departamentos as dp on dp.codDepto = e.codDepto where dp.nombreDpto like 'GERENCIA';
@@ -37,6 +43,10 @@ select count(nomEmp) , IF(sexEmp = 'F', "Sexo: Mujer", "Sexo: Hombre") from empl
 select nomEmp, salEmp from empleados;
 
 -- 12. Muestra los nombre de los empleados y quiénes son sus jefes (debe aparecer el nombre del jefe).
+
+select nDIEmp as 'DNI del empleado', nomEmp as Empleado, nDIEmp as 'DNI del jefe', j.nombEmp as jefe
+from empleados e
+join empleados j on e.jefeID = j.nDIEmp;
 
 
 -- Modifica la consulta anterior para que también aparezca el nombre del gerente y su correspondiente jefe que será NULL (ya que el gerente no tiene jefe).
