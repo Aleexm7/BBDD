@@ -30,6 +30,6 @@ describe alumnosCopia5;
 insert into alumnosCopia5 select * from alumnos where provincia like 'Cordoba';
 insert into alumnosCopia5 select * from alumnos where provincia like 'Madrid';
 
-
+drop table if exists alumnos2, alumnos4, alumnos3, alumnosCopia5;
 
 
