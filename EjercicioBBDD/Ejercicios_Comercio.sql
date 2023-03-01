@@ -30,3 +30,8 @@ right join cliente on pedido.id_cliente = cliente.id_cliente;
 
 select * from pedido
 right join cliente using(id_cliente);
+
+
+select * from cliente
+join pedido on cliente.id_cliente = pedido.id_cliente
+join vendedor on pedido.id_cliente = vendedor.id;
