@@ -55,41 +55,119 @@ where fabricante.nombre like 'Oracle';
 
 -- 10) ¿Qué comercios distribuyen Windows?
 
-select comercio.*, distribuye.*,programa.* from comercio
-inner join distribuye on comercio.cif = distribuye.cif
+select comercio.nombre, distribuye.cantidad,programa.nombre from comercio
+inner join distribuye using (cif)
 inner join programa on distribuye.codigo = programa.codigo
 where programa.nombre like 'Window';
 
 -- 11) Genera un listado de los programas y cantidades que se han distribuido a El Corte Inglés de Madrid.
 
+select programa.nombre, distribuye.cantidad, comercio.nombre from programa
+inner join distribuye using (codigo)
+inner join comercio on distribuye.cif = comercio.cif
+where comercio.nombre like 'El Corte Ingles';
 
 
 -- 12) ¿Qué fabricante ha desarrollado Freddy Hardest?
 
-
+select fabricante.nombre, programa.nombre from fabricante
+inner join desarrolla on fabricante.id_fab = desarrolla.id_fab
+inner join programa on desarrolla.codigo = programa.codigo
+where programa.nombre like 'Freddy Hardest';
 
 -- 13) Selecciona el nombre de los programas que se registran por Internet.
 
+select programa.nombre, registra.medio from programa
+inner join registra on programa.codigo = registra.codigo
+where registra.medio like 'Internet';
+
 -- 14) Selecciona el nombre de las personas que se registran por Internet.
+
+select programa.nombre, registra.medio, cliente.nombre from programa
+inner join registra on programa.codigo = registra.codigo
+inner join cliente on registra.dni = cliente.dni
+where registra.medio like 'Internet';
 
 -- 15) ¿Qué medios ha utilizado para registrarse Pepe Pérez?
 
+select registra.medio, cliente.nombre from registra
+inner join cliente on registra.dni = cliente.dni
+where cliente.nombre like 'Pepe Perez';
+
+
 -- 16) Obtén un listado de los nombres de las personas que se han registrado por Internet, junto al nombre de los programas para los que ha efectuado el registro.
+
+select cliente.nombre, registra.medio, programa.nombre from cliente
+inner join registra on cliente.dni = registra.dni
+inner join programa on registra.dni = programa.codigo
+where registra.medio like 'Internet';
+
 
 -- 17) Genera un listado en el que aparezca cada cliente junto al programa que ha registrado, el medio con el que lo ha hecho y el comercio en el que lo ha adquirido.
 
+select cliente.nombre, registra.medio, programa.nombre, comercio.nombre from cliente
+inner join registra on cliente.dni = registra.dni
+inner join programa on registra.dni = programa.codigo
+inner join comercio on registra.cif = comercio.cif;
+
 -- 18) Genera un listado con las ciudades en las que se pueden obtener los productos de Oracle.
+
+select comercio.ciudad, programa.nombre from programa
+inner join comercio on programa.codigo = comercio.cif;
+
 
 -- 19) Obtén el nombre de los usuarios que han registrado el programa Paradox en su versión 2
 
+select cliente.nombre, programa.nombre, programa.version from cliente
+inner join registra on cliente.dni = registra.cif
+inner join programa on registra.cif = programa.codigo
+where programa.nombre like 'Paradox';
+
 -- 20) Muestra qué programas Ha comprado Pepe Perez
+
+select programa.nombre, cliente.nombre from programa
+inner join registra on programa.codigo = registra.codigo
+inner join cliente on registra.cif = cliente.dni
+where cliente.nombre like 'Pepe perez';
 
 -- 21) A la consulta anterior añade también el nombre del fabricante de cada programa
 
+select programa.nombre, cliente.nombre, fabricante.nombre from programa
+inner join registra on programa.codigo = registra.codigo
+inner join cliente on registra.cif = cliente.dni
+inner join desarrolla on programa.codigo = desarrolla.codigo
+inner join fabricante on desarrolla.id_fab = fabricante.id_fab
+where cliente.nombre like 'Pepe perez';
+
 -- 22) Cuántos productos de oracle ha comprado Pepe Perez
+
+select programa.nombre, cliente.nombre, fabricante.nombre from programa
+inner join registra on programa.codigo = registra.codigo
+inner join cliente on registra.cif = cliente.dni
+inner join desarrolla on programa.codigo = desarrolla.codigo
+inner join fabricante on desarrolla.id_fab = fabricante.id_fab
+where cliente.nombre like 'Pepe perez' and fabricante.nombre like 'Oracle';
 
 -- 23) Cuenta el número de programas de cada fabricante
 
+select count(p.codigo) as num_programas, f.nombre  from programa p
+inner join desarrolla d on p.codigo = d.codigo
+inner join fabricante f on d.id_fab = f.id_fab
+group by f.nombre;
+
 -- 24) Muestra los comercios, los programas que distribuyen y los fabricantes
 
+select c.nombre, p.nombre, f.nombre  from comercio c
+inner join distribuye d on c.cif = d.cif
+inner join programa p on d.codigo = p.codigo
+inner join desarrolla on p.codigo = desarrolla.codigo
+inner join fabricante f on desarrolla.id_fab = f.id_fab;
+
+
 -- 25) Qué comercios distribuyen programas de Microsoft
+
+select c.nombre, p.nombre from programa p
+inner join distribuye d on p.codigo = d.codigo
+inner join comercio c on d.cif = c.cif
+where p.nombre like 'Microsoft';
+
