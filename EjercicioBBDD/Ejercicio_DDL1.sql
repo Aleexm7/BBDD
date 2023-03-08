@@ -55,7 +55,10 @@ select nombre, descripcion from coches where match (nombre) against('A3 TDI');
 
 select nombre, descripcion from coches where match (nombre) against('Mercedes');
 
+-- Eliminamos el index creado anteriormente para crear otro de nuevo
+drop index idx_full_nombre on coches;
 
+create fulltext index idx_full_nombre on coches (nombre, descripcion);
 
-
+select nombre, descripcion from coches where match (nombre, descripcion) against('100');
 
