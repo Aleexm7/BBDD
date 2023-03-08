@@ -49,7 +49,11 @@ show index from coches;
 
 select nombre, descripcion from coches where match (nombre) against('Audi TDI'); -- Ponemos en el match el mismo nombre que hemos creado en el index de arriba
 
+select nombre, descripcion from coches where match (nombre) against('TDI');
 
+select nombre, descripcion from coches where match (nombre) against('A3 TDI');
+
+select nombre, descripcion from coches where match (nombre) against('Mercedes');
 
 
 
