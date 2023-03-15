@@ -62,3 +62,67 @@ create fulltext index idx_full_nombre on coches (nombre, descripcion);
 
 select nombre, descripcion from coches where match (nombre, descripcion) against('100');
 
+/*
+TABLAS TEMPORALES
+*/
+
+select * from tabla_origen;
+
+create temporary  table tabla_origen select * from tabla_origen;
+
+show create table tabla_origen;
+
+set sql_safe_updates = 0;
+delete from tabla_origen where id > 1;
+set sql_safe_updates = 1;
+
+select * from tabla_origen;
+
+drop temporary table tabla_origen;
+
+
+-- Creo una temporal con nombre específico ---
+
+create temporary table tmp_tabla_origen select * from tabla_origen;
+
+select * from tmp_tabla_origen;
+
+set sql_safe_updates = 0;
+ delete from tmp_tabla_origen where id > 1;
+ set sql_safe_updates = 1;
+ 
+ show tables;
+ drop temporary table tmp_tabla_origen;
+ 
+ 
+ -- UNION Y UNION ALL ---
+ 
+ -- UNION - UNO DOS TABLAS QUE TIENEN QUE TENER LA MISMA ESTRUCTURA. NO COPIA LOS REGISTROS DE LA SEGUNDA TABLA CON CÓDIGOS DUPLICADOS
+ 
+ -- UNION ALL - UNE DOS TABLAS CON LA MISMA ESTRUCTURA Y COPIA REGISTROS DUPLICADOS
+ 
+ 
+ select * from coches;
+ 
+ create table coches2 select * from coches where idprod in (1,2,3);
+ insert into coches2 values (9,'MERCEDES CLASE A', 'COCHE DE LUJO');
+
+select * from coches
+union
+select * from coches2;
+
+select * from coches
+union all
+select * from coches2;
+
+-- error, tiene que tener el mismo numero de campos
+
+select idprod, nombre from coches
+union
+select idprod, descripcion, nombre from coches2;
+
+select idprod, nombre from coches
+union
+select idprod, descripcion as nombre from coches2;
+
+
