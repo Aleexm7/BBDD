@@ -34,8 +34,11 @@ CREATE TABLE pub (
 	PRIMARY KEY (cod_pub),
     INDEX idx_nombrePub (nombre(10)),
 	INDEX idx_cp (cod_localidad),  -- indice para la foranea
+    
+    -- Creamos una foreing key de "cod_localidad" llamada "fk_pub_localidad" haciendo referencia a la tabla localidad, eligiendo su primary key "cod_postal"
 	CONSTRAINT fk_pub_localidad FOREIGN KEY (cod_localidad) REFERENCES localidad (cod_postal) ON UPDATE CASCADE
 ) ;
+-- Este comando está creando una restricción de verificación (CHECK) llamada "ck_horario" en una tabla. La restricción asegura que la columna "horario" solo puede contener los valores 'HOR1', 'HOR2' o 'HOR3'.
 -- CONSTRAINT ck_horario CHECK ((horario in ('HOR1','HOR2','HOR3'))) 
 
 CREATE TABLE titular (
