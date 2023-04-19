@@ -26,3 +26,8 @@ select ceil(12.3567) , floor(12.3567);
 -- Elevar un numero
 select pow(2,3); -- 2 * 2 * 2 = 8
 
+set @radio = 30;
+select round((2 * PI() * @radio), 2) Area_Circulo; -- redondeamos a 2 decimales
+
+
+
