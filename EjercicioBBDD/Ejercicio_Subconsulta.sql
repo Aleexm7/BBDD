@@ -96,7 +96,7 @@ select * from emple where salario > (select avg(salario) from emple);
 
 -- 24) Visualizar el número de departamento que tenga más empleados cuyo oficio sea empleado.
 
-select emple.dept_no, count(apellido) as CantidadEmpleado from emple where oficio = 'EMPLEADO'
+select emple.dept_no, count(apellido) as CantidadgEmpleado from emple where oficio = 'EMPLEADO'
 group by dept_no having count(apellido) >= all(select count(apellido) from emple where oficio = 'EMPLEADO' group by dept_no);
 
 -- 25) Mostrar el número de oficios distintos de cada departamento.
