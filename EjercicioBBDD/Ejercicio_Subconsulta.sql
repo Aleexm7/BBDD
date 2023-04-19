@@ -42,21 +42,44 @@ select apellido, oficio, (select loc from depart where emple.dept_no = depart.de
 
 -- 8) Seleccionar el apellido, salario y localidad donde trabajan los empleados que tengan un salario entre 2000 y 3000.
 
+select apellido, salario, (select loc from depart where emple.dept_no = depart.dept_no) localidad from emple
+where salario between 2000 and 3000;
+
 -- 9) Mostrar el apellido, salario y nombre del departamento de los empleados que tengan el mismo oficio que 'GIL'.
+
+select apellido, salario, (select dnombre from depart where emple.dept_no = depart.dept_no) nombre_departamento from emple
+where oficio =( select oficio from emple where apellido like 'GIL');
 
 -- 10) Mostrar el apellido, salario y nombre del departamento de los empleados que tengan el mismo oficio que 'GIL' y que no tengan comisión.
 
+select apellido, salario, (select dnombre from depart where emple.dept_no = depart.dept_no) nombre_departamento from emple
+where oficio =( select oficio from emple where apellido like 'GIL') and comision is null;
+
+
 -- 11) Mostrar los datos de los empleados que trabajan en el departamento de contabilidad, ordenados por apellidos.
+
+select apellido, (select dnombre from depart where emple.dept_no = depart.dept_no) departamento, oficio, salario, fecha_alt from emple
+where (select dnombre from depart where emple.dept_no = depart.dept_no) like 'CONTABILIDAD'  order by apellido asc;
 
 -- 12) Apellido de los empleados que trabajan en Sevilla y cuyo oficio sea analista o empleado.
 
+select apellido from emple, depart
+where emple.dept_no = depart.dept_no and loc = 'SEVILLA' and oficio in ('ANALISTA', 'EMPLEADO');
+
 -- 13) Calcula el salario mínimo de los empleados del departamento 'VENTAS'.
+
+select min(salario) salario_minimo from emple join depart on emple.dept_no = depart.dept_no where dnombre like 'ventas';
 
 -- 14) Calcula la media de salarios de los empleados del departamento de 'CONTABILIDAD'.
 
+select avg(salario) media_salario_contabilidad from emple where dept_no = (select dept_no from depart where dnombre like 'CONTABILIDAD');
+
 -- 15) Mostrar los datos de los empleados cuyo salario sea mayor que la media de todos los salarios.
 
+select * from emple where salario > (select avg(salario) from emple);
+
 -- 16) ¿Cuántos empleados hay en el departamento de 'VENTAS'?
+
 
 -- 17) Calcula el número de empleados que hay que no tienen comisión.
 
@@ -72,6 +95,9 @@ select apellido, oficio, (select loc from depart where emple.dept_no = depart.de
 -- 23) Mostrar los departamentos cuya media de salarios sea mayor que la media de salarios de todos los empleados.
 
 -- 24) Visualizar el número de departamento que tenga más empleados cuyo oficio sea empleado.
+
+select emple.dept_no, count(apellido) as CantidadEmpleado from emple where oficio = 'EMPLEADO'
+group by dept_no having count(apellido) >= all(select count(apellido) from emple where oficio = 'EMPLEADO' group by dept_no);
 
 -- 25) Mostrar el número de oficios distintos de cada departamento.
 
