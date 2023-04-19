@@ -6,7 +6,7 @@ select dept_no, emp_no, apellido from emple where dept_no =(select dept_no  from
 -- 1) Mostrar los datos de los empleados que tengan el mismo oficio que 'CEREZO'. El resultado debe ir ordenado por apellido.
 
 
-select emp_no, apellido, oficio from emple where oficio =(select oficio from emple where apellido like 'CEREZO');
+select emp_no, apellido, oficio from emple where oficio =(select oficio from emple where apellido like 'CEREZO') order by apellido asc;
 
 -- 2) Mostrar los empleados (nombre, oficio, salario y fecha de alta) que desempeñen el mismo oficio que 'JIMÉNEZ' o que tengan un salario mayor o igual que 'FERNÁNDEZ'.
 
@@ -15,17 +15,30 @@ select emp_no, oficio, salario, fecha_alt from emple where oficio=(select oficio
 
 -- 3) Mostrar en pantalla el apellido, oficio y salario de los empleados del departamento de 'FERNÁNDEZ' que tengan su mismo salario.
 
-select  apellido, oficio, salario from emple where dept_no =(select salario from emple where apellido like 'FERNANDEZ');
+select  apellido, oficio, salario from emple where dept_no =(select dept_no from emple where apellido like 'FERNÁNDEZ')and 
+salario =(select salario from emple where apellido like 'FERNANDEZ');
 
 -- 4) Mostrar los datos de los empleados que tengan un salario mayor que 'GIL' y que pertenezcan al departamento número 10.
 
-
+select apellido, oficio, salario, fecha_alt, dept_no from emple where dept_no = 10 and salario > (select salario from emple where apellido like 'GIL');
 
 -- 5) Mostrar los apellidos, oficios y localizaciones de los departamentos de cada uno de los empleados.
 
+select apellido, oficio, (select loc from depart where emple.dept_no = depart.dept_no) localizacion from emple;
+
 -- 6) Seleccionar el apellido, el oficio y la localidad de los departamentos donde trabajan los ANALISTAS.
 
+select apellido, oficio, (select loc from depart where emple.dept_no = depart.dept_no) localizacion from emple where oficio like 'ANALISTAS';
+
+
   -- 7) Seleccionar el apellido, el oficio y salario de los empleados que trabajan en Madrid.
+  
+  select apellido, oficio, salario from emple, depart
+  where emple.dept_no = depart.dept_no and loc = 'Madrid';
+  
+  select apellido, oficio, salario from emple
+  where dept_no = (select dept_no from depart where loc='Madrid');
+  
 
 -- 8) Seleccionar el apellido, salario y localidad donde trabajan los empleados que tengan un salario entre 2000 y 3000.
 
